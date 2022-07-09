@@ -3,13 +3,15 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import './UserManage.scss';
 import { getAllUsers } from '../../services/userService';
+import ModalUser from './ModalUser';
 
 class UserManage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            arrUsers: []
+            arrUsers: [],
+            isOpenModalUser: false,
         }
     }
 
@@ -21,19 +23,42 @@ class UserManage extends Component {
             })
         }
     }
+
+    handleAddNewUser = () => {
+        this.setState({
+            isOpenModalUser: true,
+        })
+    }
+
+    toggleUserModal = () => {
+        this.setState({
+            isOpenModalUser: !this.state.isOpenModalUser,
+        })
+    }
     // - Lifecycle:
     // - Run component:
     //     1. Run contructor → init state
     //     2. Did mount  (set state0
-    //     3. Render
-
+    //     3. Render (re-render)
 
     render() {
-        console.log(`check render: `, this.state)
         let arrUsers = this.state.arrUsers;
+        console.log(arrUsers)
+        //properties; nested
         return (
             <div className="users-container">
+                <ModalUser
+                    isOpen={this.state.isOpenModalUser}
+                    toggleFromParent={this.toggleUserModal}
+                    test={'abc'}
+                />
                 <div className='title text-center'>Manage users with Bui Thai</div>
+                <div className='mx-1'>
+                    <button
+                        className='btn btn-primary px-3'
+                        onClick={() => this.handleAddNewUser()}
+                    ><i class="fas fa-plus"></i> Add a new users</button>
+                </div>
                 <div className='users-table mt-3 mx-1'>
                     <table id="customers">
                         <tr>
@@ -44,7 +69,6 @@ class UserManage extends Component {
                             <th>Actions</th>
                         </tr>
                         {arrUsers && arrUsers.map((item, index) => {
-                            console.log('bui thai check map', item, index)
                             return (
                                 <tr>
                                     <td>{item.email}</td>

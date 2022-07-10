@@ -1,3 +1,4 @@
+import { stringify } from "react-auth-wrapper/helpers";
 import axios from "../axios"
 
 const handleLoginApi = (userEmail, userPassword) => {
@@ -13,4 +14,12 @@ const createNewUserService = (data) => {
     return axios.post('/api/create-new-user', data)
 }
 
-export { handleLoginApi, getAllUsers, createNewUserService }
+const deleteUserService = (userId) => {
+    // return axios.delete('/api/delete-user', stringify)
+    return axios.delete('/api/delete-user', {
+        data: {
+            id: userId
+        }
+    });
+}
+export { handleLoginApi, getAllUsers, createNewUserService, deleteUserService }
